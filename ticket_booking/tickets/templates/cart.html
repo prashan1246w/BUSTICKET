@@ -1,0 +1,24 @@
+<script>
+    function addToCart(ticketName, price) {
+        // Logic to add the ticket to the cart
+        alert(ticketName + ' has been added to your cart at $' + price);
+        // Here you can also update the cart display dynamically
+    }
+</script>
+
+<table>
+    <tr>
+        <td>Concert Ticket</td>
+        <td>2</td>
+        <td>$50</td>
+        <td>$100</td>
+        <td><button onclick="addToCart('Concert Ticket', 50)">Add to Cart</button></td>
+    </tr>
+    <tr>
+        <td>Movie Ticket</td>
+        <td>3</td>
+        <td>$15</td>
+        <td>$45</td>
+        <td><button onclick="addToCart('Movie Ticket', 15)">Add to Cart</button></td>
+    </tr>
+</table>

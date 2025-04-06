@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="min-height: 80vh; padding: 40px 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+    <div class="container">
+        <div style="max-width: 800px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-check-circle" style="font-size: 64px; color: #28a745; margin-bottom: 20px;"></i>
+                <h2 style="color: #1e3d59; margin-bottom: 15px;">Booking Confirmed!</h2>
+                <p style="color: #666; font-size: 18px;">Thank you for booking with us. Your ticket has been confirmed.</p>
+            </div>
+
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 30px;">
+                <h3 style="color: #1e3d59; margin-bottom: 20px; border-bottom: 2px solid #ff6e40; padding-bottom: 10px;">Booking Details</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Booking ID:</strong> <span style="color: #666;">{{ booking.id }}</span></p>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Event:</strong> <span style="color: #666;">{{ booking.items.first.ticket.event_name }}</span></p>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Date:</strong> <span style="color: #666;">{{ booking.items.first.ticket.event_date|date:"F d, Y" }}</span></p>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Amount Paid:</strong> <span style="color: #ff6e40; font-weight: bold;">Rs. {{ booking.total_price }}</span></p>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Status:</strong> <span style="background-color: #28a745; color: white; padding: 3px 10px; border-radius: 15px; font-size: 14px;">Confirmed</span></p>
+                        <p style="margin-bottom: 10px;"><strong style="color: #1e3d59;">Booking Date:</strong> <span style="color: #666;">{{ booking.created_at|date:"F d, Y H:i" }}</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fff3e0; border-radius: 10px; padding: 20px; margin-bottom: 30px;">
+                <h4 style="color: #1e3d59; margin-bottom: 15px;"><i class="fas fa-info-circle" style="margin-right: 10px;"></i>Important Information</h4>
+                <ul style="list-style-type: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 10px; color: #666;"><i class="fas fa-ticket-alt" style="margin-right: 10px; color: #ff6e40;"></i>Please keep your booking ID handy for reference.</li>
+                    <li style="margin-bottom: 10px; color: #666;"><i class="fas fa-clock" style="margin-right: 10px; color: #ff6e40;"></i>Arrive at least 30 minutes before departure.</li>
+                    <li style="color: #666;"><i class="fas fa-id-card" style="margin-right: 10px; color: #ff6e40;"></i>Bring a valid ID for verification.</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{% url 'home' %}" style="display: inline-block; background: #ff6e40; color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; transition: all 0.3s ease; margin-right: 15px;">
+                    <i class="fas fa-home" style="margin-right: 8px;"></i>Back to Home
+                </a>
+                <button onclick="window.print()" style="display: inline-block; background: #1e3d59; color: white; padding: 12px 30px; border-radius: 25px; border: none; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-print" style="margin-right: 8px;"></i>Print Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+<script>
+    var config = {
+        "publicKey": "your_public_key",
+        "productIdentity": "1234567890",
+        "productName": "Ticket Booking",
+        "productUrl": "http://example.com",
+        "eventHandler": {
+            onSuccess(payload) {
+                fetch('/checkout/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: payload.token,
+                        amount: payload.amount,
+                    }),
+                }).then(response => response.json())
+                  .then(data => window.location.href = '/booking_confirmation/');
+            },
+        },
+    };
+    var checkout = new KhaltiCheckout(config);
+    checkout.show({ amount: {{ total_price * 100 }} });  // Convert to paisa
+</script>

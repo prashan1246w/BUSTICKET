@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="min-height: 80vh; padding: 40px 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <h2 style="color: #1e3d59; margin-bottom: 30px; text-align: center;">Your Cart</h2>
+
+            {% if cart_items %}
+            <div style="background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px;">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #1e3d59; margin-bottom: 20px; border-bottom: 2px solid #ff6e40; padding-bottom: 10px;">Cart Items</h3>
+                    
+                    {% for item in cart_items %}
+                    <div style="display: flex; align-items: center; padding: 20px; background: #f8f9fa; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="flex: 1;">
+                            <h4 style="color: #1e3d59; margin-bottom: 10px;">{{ item.ticket.event_name }}</h4>
+                            <p style="color: #666; margin-bottom: 5px;"><i class="fas fa-map-marker-alt" style="color: #ff6e40; margin-right: 8px;"></i>{{ item.ticket.venue }}</p>
+                            <p style="color: #666;"><i class="far fa-calendar-alt" style="color: #ff6e40; margin-right: 8px;"></i>{{ item.ticket.event_date|date:"F d, Y" }}</p>
+                        </div>
+                        <div style="text-align: center; margin: 0 30px;">
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <button onclick="updateQuantity({{ item.id }}, 'decrease')" style="background: #1e3d59; color: white; border: none; width: 30px; height: 30px; border-radius: 5px; cursor: pointer;">-</button>
+                                <span style="margin: 0 15px; color: #1e3d59; font-weight: bold;">{{ item.quantity }}</span>
+                                <button onclick="updateQuantity({{ item.id }}, 'increase')" style="background: #1e3d59; color: white; border: none; width: 30px; height: 30px; border-radius: 5px; cursor: pointer;">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: right; min-width: 120px;">
+                            <p style="color: #ff6e40; font-weight: bold; font-size: 18px;">Rs. {{ item.total_price }}</p>
+                            <button onclick="removeItem({{ item.id }})" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 14px;">
+                                <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>Remove
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div style="border-top: 1px solid #dee2e6; padding-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">Subtotal: <span style="color: #1e3d59; font-weight: bold;">Rs. {{ cart_total }}</span></p>
+                            <p style="color: #666; margin-bottom: 5px;">Tax (13%): <span style="color: #1e3d59; font-weight: bold;">Rs. {{ tax_amount }}</span></p>
+                            <p style="color: #1e3d59; font-size: 20px; font-weight: bold; margin-top: 10px;">Total: Rs. {{ total_with_tax }}</p>
+                        </div>
+                        <button onclick="proceedToCheckout()" style="background: #ff6e40; color: white; padding: 12px 30px; border-radius: 25px; border: none; cursor: pointer; transition: all 0.3s ease; font-size: 16px;">
+                            <i class="fas fa-shopping-cart" style="margin-right: 8px;"></i>Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div style="text-align: center; padding: 50px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <i class="fas fa-shopping-cart" style="font-size: 64px; color: #1e3d59; margin-bottom: 20px;"></i>
+                <h3 style="color: #1e3d59; margin-bottom: 15px;">Your cart is empty</h3>
+                <p style="color: #666; margin-bottom: 30px;">Start adding tickets to your cart and plan your journey!</p>
+                <a href="{% url 'home' %}" style="display: inline-block; background: #ff6e40; color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; transition: all 0.3s ease;">
+                    <i class="fas fa-ticket-alt" style="margin-right: 8px;"></i>Browse Tickets
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateQuantity(itemId, action) {
+        fetch(`/cart/update/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+
+    function removeItem(itemId) {
+        if (confirm('Are you sure you want to remove this item?')) {
+            fetch(`/cart/remove/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        }
+    }
+
+    function proceedToCheckout() {
+        window.location.href = "{% url 'checkout' %}";
+    }
+</script>
+{% endblock %}

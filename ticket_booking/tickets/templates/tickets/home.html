@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(30, 61, 89, 0.8), rgba(30, 61, 89, 0.8)), url('{% static "images/placeholder.jpg" %}') no-repeat center center;
+        background-size: cover;
+        padding: 100px 0;
+        color: white;
+        margin-top: -1.5rem;
+    }
+
+    .search-form {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-form label {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .featured-routes {
+        padding: 4rem 0;
+    }
+
+    .route-card {
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .route-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .route-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .price-tag {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .features-section {
+        background-color: #f8f9fa;
+        padding: 4rem 0;
+    }
+
+    .feature-item {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        height: 100%;
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .price-tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .ticket-details {
+        margin-bottom: 1rem;
+    }
+    
+    .ticket-details p {
+        margin-bottom: 0.5rem;
+    }
+    
+    .ticket-details i {
+        width: 20px;
+        margin-right: 0.5rem;
+    }
+
+    .feature-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-card i {
+        color: var(--primary-color);
+    }
+    
+    .feature-card h3 {
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+
+    .price-button {
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0.75rem;
+        background: linear-gradient(45deg, #5c6bc0, #3949ab);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .price-button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        background: linear-gradient(45deg, #3949ab, #5c6bc0);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Search Form -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="search-form">
+                    <h2 class="text-center mb-4">Book Your Bus Ticket</h2>
+                    <form method="get">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="from">From</label>
+                                <input type="text" class="form-control" id="from" name="from" value="{{ from_city|default:'' }}" placeholder="Departure City">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="to">To</label>
+                                <input type="text" class="form-control" id="to" name="to" value="{{ to_city|default:'' }}" placeholder="Destination City">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="date">Date</label>
+                                <input type="date" class="form-control" id="date" name="date" value="{{ travel_date|default:'' }}">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Search Buses</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <i class="fas fa-bus fa-3x mb-3 text-primary"></i>
+                    <h3>Luxury Buses</h3>
+                    <p>Travel in comfort with our modern luxury buses equipped with AC and comfortable seats.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
+                    <h3>Safe Journey</h3>
+                    <p>Your safety is our top priority with experienced drivers and well-maintained vehicles.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <i class="fas fa-clock fa-3x mb-3 text-primary"></i>
+                    <h3>On-Time Service</h3>
+                    <p>We value your time and ensure punctual departure and arrival.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Available Routes Section -->
+<section class="routes-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Available Routes</h2>
+        <div class="row">
+            {% for ticket in tickets %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="{{ ticket.event_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ticket.event_name }}</h5>
+                        <div class="ticket-details">
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt text-primary"></i> 
+                                <strong>From:</strong> {{ ticket.venue }}
+                            </p>
+                            <p class="card-text">
+                                <i class="far fa-calendar-alt text-primary"></i> 
+                                <strong>Date:</strong> {{ ticket.event_date|date:"F d, Y" }}
+                            </p>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-primary w-100 price-button" 
+                                    id="khalti-button-{{ ticket.id }}"
+                                    data-ticket-id="{{ ticket.id }}"
+                                    data-amount="{{ ticket.price }}"
+                                    data-product-name="{{ ticket.event_name }}">
+                                Rs. {{ ticket.price }}
+                            </button>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-primary w-100 price-button">
+                                Rs. {{ ticket.price }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No routes available for the selected criteria.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .feature-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-card i {
+        color: var(--primary-color);
+    }
+    
+    .feature-card h3 {
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .ticket-details {
+        margin-bottom: 1rem;
+    }
+    
+    .ticket-details p {
+        margin-bottom: 0.5rem;
+    }
+    
+    .ticket-details i {
+        width: 20px;
+        margin-right: 0.5rem;
+    }
+
+    .price-button {
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0.75rem;
+        background: linear-gradient(45deg, #5c6bc0, #3949ab);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .price-button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        background: linear-gradient(45deg, #3949ab, #5c6bc0);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include Khalti SDK -->
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.22.0.0.0/khalti-checkout.iffe.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for ticket in tickets %}
+        (function(ticketId) {
+            var button = document.getElementById('khalti-button-' + ticketId);
+            if (button) {
+                button.onclick = function() {
+                    var config = {
+                        "publicKey": "{{ khalti_public_key }}",
+                        "productIdentity": ticketId,
+                        "productName": this.dataset.productName,
+                        "productUrl": window.location.href,
+                        "amount": parseFloat(this.dataset.amount) * 100, // Convert to paisa
+                        "eventHandler": {
+                            onSuccess(payload) {
+                                // Send token to backend for verification
+                                fetch("{% url 'verify_payment' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': '{{ csrf_token }}'
+                                    },
+                                    body: JSON.stringify({
+                                        token: payload.token,
+                                        amount: payload.amount,
+                                        ticket_id: ticketId
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        window.location.href = "{% url 'payment_success' %}";
+                                    } else {
+                                        alert('Payment verification failed: ' + data.message);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('An error occurred during payment verification');
+                                });
+                            },
+                            onError(error) {
+                                console.log(error);
+                                alert('Payment failed. Please try again.');
+                            },
+                            onClose() {
+                                console.log('Payment widget closed');
+                            }
+                        }
+                    };
+
+                    var checkout = new KhaltiCheckout(config);
+                    checkout.show({popUp: true});
+                };
+            }
+        })({{ ticket.id }});
+        {% endfor %}
+    });
+</script>
+{% endblock %}
